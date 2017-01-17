@@ -37,7 +37,8 @@
             }
         },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'id',
+            'parent_id',
             'text:ntext',
             'date',
             ['class' => 'yii\grid\ActionColumn',

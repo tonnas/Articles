@@ -5,13 +5,13 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Comment;
 use yii\filters\VerbFilter;
+use yii\helpers\HtmlPurifier;
 
 /**
  * CommentController implements the CRUD actions for Comment model.
  */
 class CommentController extends \yii\web\Controller
 {
-
     public function behaviors()
     {
       return [
@@ -27,7 +27,7 @@ class CommentController extends \yii\web\Controller
     public function actionIndex()
     {
         $model = Comment::find()
-            ->where(['parent_id' => NULL])
+            ->where(['parent_id' => 0])
             ->all();
         return $this->render('index',[
           'model' => $model
@@ -37,7 +37,8 @@ class CommentController extends \yii\web\Controller
     public function actionCreate($parent = NULL)
     {
         $model = new Comment();
-        $model->parent_id = $parent;
+//        echo Html::encode($model);
+        if (!empty($parent)) $model->parent_id = $parent;
         $post = Yii::$app->request->post();
         if ($model->load($post))
         {
