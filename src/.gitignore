@@ -19,8 +19,6 @@ Thumbs.db
 
 # composer vendor dir
 /vendor
-/environments
-/vargant
 
 # composer itself is not needed
 composer.phar
@@ -35,8 +33,3 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
-Vagrantfile
-yii.bat
-requirements.php
-composer.json
-composer.lock

@@ -28,21 +28,25 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Article',
-        'brandUrl' => ['/comment/index'],
+        'brandLabel' => 'Home',
+        'brandUrl' => ['/site/index'],
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => '', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'Articles', 'url' => ['/article/index']];
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+
+        $menuItems[] = ['label' => 'Articles', 'url' => ['/article/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
+                //sem este dorobm zelenu gulicku, minimalne, plus mozno obrzok akoze je online :D niekde do hlavicky
             )
             . Html::endForm()
             . '</li>';

@@ -1,14 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+    use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model frontend\models\Comment */
-/* @var $form ActiveForm */
-$model = new common\models\Comment;
+    /* @var $this yii\web\View */
+    /* @var $form ActiveForm */
 ?>
-
-
-<div class="site-index">
-</div>

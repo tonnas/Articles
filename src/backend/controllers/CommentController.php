@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Article;
 
 /**
  * CommentController implements the CRUD actions for Comment model.
@@ -47,14 +48,17 @@ class CommentController extends Controller
      * Lists all Comment models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($article_id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Comment::find(),
+            'query' => Comment::find()->where(['article_id' => $article_id]),
         ]);
+
+        $article = Article::findOne($article_id);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'article'=> $article,
         ]);
     }
 
@@ -67,13 +71,14 @@ class CommentController extends Controller
     {
         $model = new Comment();
         $model->parent_id = $id;
-        $model->is_admin = 1;
         $post = Yii::$app->request->post();
         if ($model->load($post))
         {
+            $model->article_id = Comment::findOne($id)->article_id;
+            $model->who = 'ADMIN';
             $model->confirmation = 1;
             if($model->save())
-                return $this->redirect(['index']);
+                return $this->redirect(['index','article_id' => $model->article_id]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
@@ -81,15 +86,17 @@ class CommentController extends Controller
         }
     }
 
-    public function actionCreatecomment()
+    public function actionCreatecomment($article_id)
     {
         $model = new Comment();
+        $model->article_id = $article_id;
         $model->confirmation = 1;
-        $model->is_admin = 1;
+        $model->who = 'ADMIN';
         $model->parent_id = NULL;
+
         $post = Yii::$app->request->post();
         if ($model->load($post) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['index','article_id' => $model->article_id]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
@@ -108,7 +115,7 @@ class CommentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['index','article_id' => $model->article_id]);
         } else {
             return $this->renderAjax('update', [
                 'model' => $model,
@@ -140,10 +147,11 @@ class CommentController extends Controller
 
     public function actionConfirm($id)
     {
-        $data = $this->findModel($id);
-        $data->confirmation = 1;
-        $data->update(true, ['confirmation']);
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->confirmation = 1;
+        $model->update(true, ['confirmation']);
+
+        return $this->redirect(['index','article_id' => $model->article_id]);
     }
 
     /**

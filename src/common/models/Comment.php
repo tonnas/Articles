@@ -35,7 +35,8 @@ class Comment extends \yii\db\ActiveRecord
             [['text'], 'required'],
             [['text'], 'string'],
             [['confirmation', 'parent_id'], 'integer'],
-            [['is_admin'], 'integer'],
+            [['who'], 'string'],
+            [['article_id'], 'integer'],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
